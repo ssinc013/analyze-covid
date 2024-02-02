@@ -1,0 +1,103 @@
+---
+title: "Project 3: Wrangling and Analyzing COVID-19 Data from the CDC"
+author: "Shelly Sinclair"
+date: "`r Sys.Date()`"
+format:
+  docx:
+    self-contained: true
+    toc: true
+    number-sections: true
+knitr:
+  opts_chunk:      ########## set global options ############
+    collapse: true # keep code from blocks together (if shown)
+    echo: false    # don't show code
+    message: false  # show messages
+    warning: false  # show warnings
+    error: false    # show error messages
+    comment: ""    # don't show ## with printed output
+    R.options:    
+      digits: 3    # round to three digits
+editor: source
+bibliography: [project3.bib]
+---
+
+
+
+# Introduction
+
+
+```{r}
+
+library(purrr)
+library(readxl)
+library(tidyverse)
+
+```
+
+```{r}
+
+# import the newly cleaned data set
+CDC_COVID_wrangled <- read_csv("data_clean/CDC_COVID_wrangled.csv")
+
+```
+
+The corona virus pandemic was a major global public health crisis. COVID-19 is an infectious disease caused by the SARS-CoV-2 virus [@noauthor_coronavirus_nodate]. The infection results in mild to moderate respiratory distress, however, some become seriously ill and require hospitalization. The virus is easily spread through coughs, sneezes and breathing in shared spaces. 
+
+A problem regarding the pandemic was the high rates of hospitalization. This pandemic has shown seasonal spikes regarding cases, hospitalizations and mortality, specifically during the winter months when infection transmission happens more often. 
+
+Hospitalizations can cause issues if hospitals are dealing with staff or supply shortages, such as not having enough nurses or ICU beds to deal with the influx of COVID-19 patients [@wiemken_seasonal_2023] . As a result, this pandemic put extreme stress on the health care workforce. Due to pre-existing shortages and issues regarding staff burnout and exhaustion, the pandemic exacerbated these issues. 
+
+
+
+# Analysis
+
+
+
+The hospitalization trends for Miami-Dade, Broward and Palm Beach county in Florida are depicted in @fig-Hospitalizations. The trend shown below shows that the three counties follow a similar trend. However, the graph shows that Miami-Dade and Broward had higher admission counts then Palm Beach did during the peaks, specifically after August, 2021 and January, 2022 [@couture_estimating_2022]. 
+
+During the summer months of 2021, the Delta variant hit Florida counties. This variant caused COVID-19 symptoms to become more extreme and in a population with more elderly people than any other state, this makes Florida exceptionally vulnerable to high transmission and mortality rates [@mazzei_what_2021]. This caused a spike in hospitalizations. 
+
+A second and even larger peak happened last year in January 2022. This was right in the middle of the Omicron variant surge which, while not as severe as the Delta variant, happened to be the most contagious strain [@yan_why_2022]. Since the transmission is happening faster and much easier, hospitalizations spiked among populations in all three counties. 
+
+```{r}
+#| label: fig-Hospitalizations
+#| fig-cap: This graph shows the average number of COVID related hospitalizations based on the 7-day moving average
+
+hospitalizations <- 
+  ggplot(data = CDC_COVID_wrangled) +
+  theme_classic() +
+  aes(
+    x = report_date,
+    y = admissions_7day,
+    color = county
+  ) +
+  labs(
+    title = "This graph shows the average number of \nhospitalizations based on the 7-day moving average.",
+    caption = "Source: CDC",
+    y = "COVID-19 Patients - last 7 days",
+    x = "Date",
+    color = "County"
+  ) +
+  geom_line(linewidth = 0.5)
+
+hospitalizations
+
+```
+
+Part of the reason for why the counts vary so much between the counties is due to their population size. Miami-Dade county has 1 million more residents than both Broward and Palm Beach county, with the latter having the smallest population size. As Omicron continues to mutate and spread, the hospitalizations showed a minor increased July, 2022, months after the initial peak in January. 
+
+
+
+# Conclusion
+
+
+
+While research is expanding, improved vaccinations and treatments are necessary to manage the pandemic. High rates of hospitalization can be due to a number of causes, such as increasing severity in COVID cases, especially among those with other health conditions, along with being in populations with low vaccinations. Additionally, in Florida there is a higher number of elderly people than the average state. Since COVID has more significant side effects for aging populations which require hospitalization, Miami, Broward and Palm Beach will be more sensitive to changes in the pandemic. 
+
+Increasing supplies and staff in hospitals is necessary to deal with these peaked hospitalization trends. This requires extensive reform in the healthcare system to improve support and compensation for medical staff. Currently, there is a huge shortage in nurses and many nurses currently working face extreme stress and burnout. Additionally, there are not enough doctors in America due to the difficulty to become one, such as extremely high loans for students and the rigorous, exclusionary application process for hospitals and universities. More research needs to be done on the statistics of the pandemic and its effects, however, these hospitalization trends show that change needs to occur in the health care system. 
+
+
+
+# References
+
+
